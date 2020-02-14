@@ -13,7 +13,7 @@ module.exports = function(grunt) {
                 options: {
                     stdout: true
                 },
-                command: '<%= composerBin %>/phpcs -p --colors'
+                command: '<%= composerBin %>/phpcs'
             },
 
             phpcbf: {
@@ -47,18 +47,19 @@ module.exports = function(grunt) {
             // Copy the plugin to a versioned release directory
             main: {
                 src: [
-                    '**',
-                    '!*.xml', '!*.log',                                         // any config/log files
-                    '!node_modules/**', '!Gruntfile.js*', '!package*.json',     // npm/Grunt
-                    '!assets/**',                                               // wp-org assets
-                    '!dist/**',                                                 // build directory
-                    '!.git/**',                                                 // version control
-                    '!tests/**', '!scripts/**', '!phpunit.xml*', '!clover.xml', // unit testing
-                    '!vendor/**', '!composer.*',                                // composer
-                    '!.*', '!**/*~',                                            // hidden files
-                    '!CONTRIBUTING.md', '!README.md',                           // GitHub docs
-                    '!phpcs.xml*',                                              // CodeSniffer Configuration
-                    '!tags*',                                                   // IDE files
+									'**',
+                  '!*.xml', '!*.log',																					// any config/log files
+                  '!node_modules/**', '!Gruntfile.js*', '!package*.json',			// npm/Grunt
+                  '!assets/**',																								// wp-org assets
+                  '!dist/**',																									// build directory
+                  '!.git/**',																									// version control
+                  '!tests/**', '!scripts/**', '!phpunit.xml*', '!clover.xml',	// unit testing
+                  '!vendor/**', '!composer.*',																// composer
+									'!wordpress/**',
+                  '!.*', '!**/*~',																						// hidden files
+                  '!CONTRIBUTING.md', '!README.md',														// GitHub docs
+                  '!phpcs.xml*',																							// CodeSniffer Configuration
+                  '!tags*',																										// IDE files
                 ],
                 dest: 'dist/',
                 options: {
@@ -82,11 +83,11 @@ module.exports = function(grunt) {
                 textdomain: 'woocommerce-local-pickup-time',    // Project text domain.
             },
             update_all_domains: {
-                  options: {
-                  updateDomains: true
-                },
-                src: [ '*.php', '**/*.php', '!node_modules/**', '!tests/**', '!scripts/**' ]
-            },
+							options: {
+								updateDomains: true
+							},
+							src: [ '*.php', '**/*.php', '!node_modules/**', '!tests/**', '!scripts/**', '!wordpress/**' ]
+			      },
         },
 
         wp_readme_to_markdown: {
@@ -102,18 +103,19 @@ module.exports = function(grunt) {
                 options: {
                     domainPath: '/languages', // Where to save the POT file.
                     exclude: [
-                        'node_modules/.*',        //npm
-                        'assets/.*',              //wp-org assets
-                        'dist/.*',                //build directory
-                        '.git/.*',                //version control
-                        'tests/.*', 'scripts/.*', //unit testing
-                        'vendor/.*',              //composer
-                    ], // List of files or directories to ignore.
-                    mainFile: 'woocommerce-local-pickup-time.php',    // Main project file.
-                    potFilename: 'woocommerce-local-pickup-time.pot', // Name of the POT file.
+                      'node_modules/.*',				//npm
+                      'assets/.*', 							//wp-org assets
+                      'dist/.*', 								//build directory
+                      '.git/.*', 								//version control
+                      'tests/.*', 'scripts/.*',	//unit testing
+											'vendor/.*', 							//composer
+											'wordpress/.*',
+                    ],                          // List of files or directories to ignore.
+                    mainFile: 'woocommerce-local-pickup-time.php',                     // Main project file.
+                    potFilename: 'woocommerce-local-pickup-time.pot',                  // Name of the POT file.
                     potHeaders: {
-                        poedit: true,                 // Includes common Poedit headers.
-                        'x-poedit-keywordslist': true // Include a list of all possible gettext functions.
+                      poedit: true,                 // Includes common Poedit headers.
+                      'x-poedit-keywordslist': true // Include a list of all possible gettext functions.
                     },                                // Headers to add to the generated POT file.
                     type: 'wp-plugin',                // Type of project (wp-plugin or wp-theme).
                     updateTimestamp: true,            // Whether the POT-Creation-Date should be updated without other changes.
@@ -159,12 +161,13 @@ module.exports = function(grunt) {
             },
             files: {
                 src: [
-                    '**/*.php',
-                    '!node_modules/**',
-                    '!dist/**',
-                    '!tests/**',
-                    '!vendor/**',
-                    '!*~',
+                  '**/*.php',
+                  '!node_modules/**',
+                  '!dist/**',
+                  '!tests/**',
+									'!vendor/**',
+									'!wordpress/**',
+                  '!*~',
                 ],
                 expand: true,
             },
@@ -190,7 +193,7 @@ module.exports = function(grunt) {
     grunt.registerTask( 'phpunit', [ 'shell:phpunit' ] );
     grunt.registerTask( 'i18n', [ 'addtextdomain', 'makepot', 'po2mo' ] );
     grunt.registerTask( 'readme', [ 'wp_readme_to_markdown' ] );
-    grunt.registerTask( 'test', [ 'checktextdomain', 'phpcs', 'phpunit' ] );
+    grunt.registerTask( 'test', [ 'checktextdomain', 'phpcs' ] );
     grunt.registerTask( 'build', [ 'gitinfo', 'test', 'clean', 'i18n', 'readme', 'copy' ] );
     //grunt.registerTask( 'deploy', [ 'checkbranch:master', 'checkrepo', 'build', 'wp_deploy' ] );
     grunt.registerTask( 'deploy', [ 'checkrepo', 'build' ] );

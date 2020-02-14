@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <phpunit
 	bootstrap="tests/phpunit/bootstrap.php"
 	backupGlobals="false"
@@ -22,7 +23,7 @@
 			<exclude>
 				<directory suffix=".php">src/views</directory>
 				<!-- <file>/path/to/file</file> -->
-			</exclude> -->
+			</exclude>
 		</whitelist>
 	</filter>
 	<logging>
